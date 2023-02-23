@@ -1,0 +1,32 @@
+<div class="container">
+    <h1>Edit Task</h1>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
+                <div class="form-group p-2">
+                    <label for="task-name" class="control-label">Name: </label>
+                    <input id="task-name" type="text" formControlName="taskName" class="form-control">
+                </div>
+
+                <div class="form-group p-2">
+                    <label for="task-due-to" class="control-label">Due To: </label>
+                    <input id="task-due-to" type="date" formControlName="taskDueDate" class="form-control">
+                </div>
+
+                <div class="form-group p-2">
+                    <label for="assigned-to" class="control-label">Assigned To: </label>
+                    <input id="assigned-to" type="email" formControlName="taskAssignedTo" class="form-control">
+                </div>
+
+                <div class="form-group d-grid gap-2 p-2">
+                    <p>Complete the form to enable button.</p>
+                    <button type="submit" [disabled]="!taskForm.valid"
+                        [ngClass]="{'btn-light': !taskForm.valid, 'btn-primary' : taskForm.valid }"
+                        class="btn">Save</button>
+                    <button type="button" class="btn btn-link" (click)="back()">Back to List</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div>

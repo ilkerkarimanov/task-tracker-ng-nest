@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: task-web-api
+  labels:
+    app: task-web-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: task-web-api
+  template:
+    metadata:
+      labels:
+        app: task-web-api
+    spec:
+      containers:
+      - name: task-web-api
+        image: ilkerkarimanov/keri-task-web-api
+        ports:
+        - containerPort: 3000
+        resources:
+          requests:
+            cpu: 100m
+            memory: 1Gi
+        volumeMounts:
+          - mountPath: /usr/src/app/assets/
+            name: task-web-api-configmap-volume
+#        - mountPath: /usr/src/app/assets/app.config.json
+#          name: web-api-config
+      volumes:
+        # `name` here must match the name
+        # specified in the volume mount
+        - name: task-web-api-configmap-volume
+          #
+          configMap:
+            name: task-web-api-configmap
+#      - name: web-api-config
+#       hostPath:
+#          path: /run/desktop/mnt/host/d/Projects/task-tracker-ng-nest/task-tracker-web-api/assets/app.config.json
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: task-web-api-service
+spec:
+  selector:
+    app: task-web-api
+  type: LoadBalancer  
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
+status:
+  loadBalancer: {}

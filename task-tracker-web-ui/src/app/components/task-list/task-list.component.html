@@ -1,0 +1,23 @@
+<h1>Tasks Manager</h1>
+<h4 *ngIf="isCreationMode()">Tasks of {{tasksUserName}}</h4>
+<h4 *ngIf="isAssignmentMode()">Tasks for {{tasksUserName}}</h4>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Due Date</th>
+            <th>Created By</th>
+            <th>Assigned To</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let task of tasks">
+            
+            <td><a routerLink="/editTask/{{task.taskId}}">{{task.taskName}}</a></td>
+            <td>{{task.taskDueDate | date}}</td>
+            <td>{{task.taskCreatedBy}}</td>
+            <td>{{task.taskAssignedTo}}</td>
+        </tr>
+    </tbody>
+</table>
+<a [routerLink]="['/createTask']">Create New</a>

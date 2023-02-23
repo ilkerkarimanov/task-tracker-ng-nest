@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: task-web-api-configmap
+data:
+    app.config.json: |
+      {
+          "databaseHost": "mysqldb-service",
+          "databasePort": "3306",
+          "databaseName": "test",
+          "databaseUsr": "root",
+          "databasePwd": "root"
+      }

@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: task-web-ui
+  labels:
+    app: task-web-ui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: task-web-ui
+  template:
+    metadata:
+      labels:
+        app: task-web-ui
+    spec:
+      containers:
+        - name: task-web-ui
+          image: ilkerkarimanov/keri-task-web-ui
+          env:
+            - name: API_URL
+              value: http://task-web-api-service/api
+          ports:
+            - containerPort: 80
+          volumeMounts:
+          - mountPath: /usr/share/nginx/html/assets/app.config.json
+            name: web-ui-config
+          - mountPath: /etc/nginx/templates/nginx.conf
+            name: nginx-ui-config
+      volumes:
+      - name: web-ui-config
+        hostPath:
+          path: /run/desktop/mnt/host/d/Projects/task-tracker-ng-nest/k8s/web-ui.app.config.json
+      - name: nginx-ui-config
+        hostPath:
+          path: /run/desktop/mnt/host/d/Projects/task-tracker-ng-nest/k8s/templates/nginx.conf
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: task-web-ui-service
+spec:
+  selector:
+    app: task-web-ui
+  type: LoadBalancer  
+  ports:
+    - protocol: TCP
+      port: 4200
+      targetPort: 80
+      nodePort: 30200

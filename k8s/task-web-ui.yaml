@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: task-web-ui
+  labels:
+    app: task-web-ui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: task-web-ui
+  template:
+    metadata:
+      labels:
+        app: task-web-ui
+    spec:
+      containers:
+        - name: task-web-ui
+          image: ilkerkarimanov/keri-task-web-ui
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              cpu: 100m
+              memory: 1Gi
+          volumeMounts:
+          - mountPath: /usr/share/nginx/html/assets/
+            name: task-web-ui-configmap-volume
+          - mountPath: /etc/nginx/templates/nginx.conf
+            name: task-nginx-configmap-volume
+            subPath: nginx.conf
+      volumes:
+        - name: task-web-ui-configmap-volume
+          configMap:
+            name: task-web-ui-configmap
+        - name: task-nginx-configmap-volume
+          configMap:
+            name: task-nginx-configmap        
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: task-web-ui-service
+spec:
+  selector:
+    app: task-web-ui
+  type: LoadBalancer  
+  ports:
+    - protocol: TCP
+      port: 4200
+      targetPort: 80
+status:
+  loadBalancer: {}

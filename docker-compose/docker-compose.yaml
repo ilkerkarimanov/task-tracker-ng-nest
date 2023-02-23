@@ -1,0 +1,46 @@
+version: "3.9"
+name: task-tracker-ng-nest
+services:
+  mysql:
+    image: mysql:8
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: test
+    ports:
+      - "3306:3306"
+    volumes:
+      - ../infrastructure/dbdata:/var/lib/mysql #Option 2: Local managed folder
+#      - mysql-data:/var/lib/mysql #Option 1: Docker managed volume
+  backend:
+    build:
+      context: ../task-tracker-web-api
+    #env_file:
+    #    - ./web-api.app.config.env #Option 2: use env variables via file
+    volumes:
+    - type: bind #Option 1: use volime file binding
+      source: ./web-api.app.config.json
+      target: /usr/src/app/assets/app.config.json
+    ports:
+      - 3000:3000
+    depends_on:
+      - mysql
+  frontend:
+    build:
+      context: ../task-tracker-web-ui
+    environment:
+      API_URL: http://localhost:3000/api
+    volumes:
+      - type: bind #Option 1: use compose template location to parse properly env variables
+        source: ./web-ui.app.config.json
+        target: /usr/share/nginx/html/assets/app.config.json
+      - ./templates:/etc/nginx/templates
+      #- type: bind #Option 2: use compose service url mapping
+      #  source: ./nginx.conf
+      #  target: /etc/nginx/nginx.conf
+    ports:
+      - 4200:80
+    depends_on:
+      - backend
+#volumes:
+#  mysql-data: #Option 1: Docker managed volume

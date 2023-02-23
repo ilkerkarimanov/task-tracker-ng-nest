@@ -1,0 +1,5 @@
+{
+    "defaultApiUrl": "http://task-web-api-service:3000/api",
+    "daprApiUrl": "",
+    "daprAppId": ""
+}
