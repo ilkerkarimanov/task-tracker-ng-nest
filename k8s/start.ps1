@@ -1,0 +1,12 @@
+kubectl apply `
+    -f mysql-storageclass.yaml `
+    -f mysql-persistentvolume.yaml `
+    -f mysql-persistentvolumeclaim.yaml `
+    -f mysql-configmap.yaml `
+    -f mysql-secret.yaml `
+    -f mysql.yaml `
+    -f task-web-api-configmap.yaml `
+    -f task-web-api.yaml `
+    -f task-web-ui-configmap.yaml `
+    -f task-nginx-configmap.yaml `
+    -f task-web-ui.yaml

@@ -1,6 +1,6 @@
 ### kubectl apply commands in order
 
-    kubectl apply -f mysql-storageclass.yml
+    kubectl apply -f mysql-storageclass.yaml
     kubectl apply -f mysql-persistentvolume.yaml
     kubectl apply -f mysql-persistentvolumeclaim.yaml
     kubectl apply -f mysql-configmap.yaml    
