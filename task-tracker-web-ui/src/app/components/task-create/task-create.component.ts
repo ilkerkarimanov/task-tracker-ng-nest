@@ -39,9 +39,9 @@ export class TaskCreateComponent implements OnInit {
   async onSubmit() {
     console.warn(this.taskForm.value);
     const data: TaskCreateModel = {
-      taskName: this.taskForm.value.taskName,
-      taskAssignedTo: this.taskForm.value.taskAssignedTo,
-      taskDueDate: this.taskForm.value.taskDueDate
+      taskName: this.taskForm.value.taskName ?? '',
+      taskAssignedTo: this.taskForm.value.taskAssignedTo ?? '',
+      taskDueDate: this.taskForm.value.taskDueDate ? new Date(this.taskForm.value.taskDueDate) : new Date()
     }
     await this.taskApiService.addTask(data);
     this.back();
